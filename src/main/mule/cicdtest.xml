@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+	<http:listener-config name="HTTP_Listener_config" doc:name="HTTP Listener config" doc:id="49ce0087-352c-4199-9a53-d468ecd1c582" >
+		<http:listener-connection host="0.0.0.0" port="8088" />
+	</http:listener-config>
+	<flow name="cicdtestFlow" doc:id="6b5eff94-cc24-4852-a8e1-9f8e6599c3d2" >
+		<http:listener doc:name="Listener" doc:id="015dadaa-7779-4309-85e6-fed824b0d3ef" config-ref="HTTP_Listener_config" path="/test"/>
+		<ee:transform doc:name="Transform Message" doc:id="4b9d96f9-ef08-4a7a-bd37-42295d55c0f4" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+{
+	response: "Success"
+}]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<set-payload value='#[payload]' doc:name="Set Payload" doc:id="5daeb890-5a8e-4b1a-a789-2863e0eefc43" />
+	</flow>
+</mule>
